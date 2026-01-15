@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Daily Sales Dashboard — Management View</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <header class="header">
+    <div class="title">
+      <h1>Daily Sales Dashboard — Management View</h1>
+      <div class="sub">
+        Source file: <span class="mono">Abdullah Naser daily sales.xlsx</span> •
+        Last sales date in source: <span id="lastDate"></span>
+      </div>
+    </div>
+    <div class="right">
+      <div class="pill" id="dataStatus">Loading data…</div>
+      <div class="pill">No external libraries</div>
+      <button id="exportBtn" class="btn">Export filtered table (CSV)</button>
+    </div>
+  </header>
+
+  <section class="controls">
+    <div class="control">
+      <label>Team</label>
+      <select id="teamFilter"></select>
+    </div>
+    <div class="control">
+      <label>Product Group</label>
+      <select id="groupFilter"></select>
+    </div>
+    <div class="control">
+      <label>Months (multi)</label>
+      <select id="monthFilter" multiple size="6"></select>
+      <div class="hint">Ctrl/⌘ + click to multi-select</div>
+    </div>
+    <div class="control">
+      <label>YTD mode</label>
+      <div class="toggle">
+        <input type="checkbox" id="ytdMode"/>
+        <span>Jan → max selected month</span>
+      </div>
+      <div class="hint">Useful for YTD reporting without manual multi-select</div>
+    </div>
+    <div class="control grow">
+      <label>Search item</label>
+      <input id="itemSearch" placeholder="Type part of item name..."/>
+      <div class="hint">Filters table + charts</div>
+    </div>
+    <div class="control">
+      <button id="resetBtn" class="btn">Reset</button>
+    </div>
+  </section>
+
+  <section class="kpis">
+    <div class="kpi">
+      <div class="kpiLabel">Sales (Total Value)</div>
+      <div class="kpiValue" id="kpiSales">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpiLabel">Budget (Total Value)</div>
+      <div class="kpiValue" id="kpiBudget">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpiLabel">Achievement</div>
+      <div class="kpiValue" id="kpiAch">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpiLabel">Variance (Sales−Budget)</div>
+      <div class="kpiValue" id="kpiVar">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpiLabel">Sales (Total Qty)</div>
+      <div class="kpiValue" id="kpiSalesQty">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpiLabel">Bonus Value Share</div>
+      <div class="kpiValue" id="kpiBonusShare">—</div>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <div class="cardHeader">
+        <h2>Sales vs Budget by Month</h2>
+        <div class="small">Total Value (goods + bonus)</div>
+      </div>
+      <canvas id="chartMonthly" width="1100" height="340"></canvas>
+    </div>
+    <div class="card">
+      <div class="cardHeader">
+        <h2>Variance Waterfall</h2>
+        <div class="small">Budget → Actual driven by Product Groups</div>
+      </div>
+      <canvas id="chartWaterfall" width="1100" height="340"></canvas>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <div class="cardHeader">
+        <h2>Team Ranking</h2>
+        <div class="small">Top teams by Sales Total Value</div>
+      </div>
+      <canvas id="chartTeams" width="1100" height="340"></canvas>
+    </div>
+    <div class="card">
+      <div class="cardHeader">
+        <h2>Top Items</h2>
+        <div class="small">Top items by Sales Total Value</div>
+      </div>
+      <canvas id="chartItems" width="1100" height="340"></canvas>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="cardHeader">
+      <h2>Detail Table</h2>
+      <div class="small">Sorted by Sales Total Value (desc)</div>
+    </div>
+    <div class="tableWrap">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>Product Group</th>
+            <th>Item</th>
+            <th class="num">Month</th>
+            <th class="num">Budget Total Value</th>
+            <th class="num">Sales Total Value</th>
+            <th class="num">Variance</th>
+            <th class="num">Achievement</th>
+            <th class="num">Sales Total Qty</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <script src="data/sales_data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
